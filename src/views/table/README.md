@@ -1,5 +1,12 @@
+举个🌰:
+
+```html
 <template>
-  <my-table :data="tableData" :rowHeader="rowHeader"></my-table>
+  <my-table
+    :data="tableData"
+    :rowHeader="rowHeader"
+    :pagination="pagination"
+  />
 </template>
 
 <script>
@@ -8,27 +15,33 @@ export default {
   components: { MyTable },
   data () {
     return {
+      pagination: {
+        total: 50,
+        prevText: '上一页',
+        nextText: '下一页',
+        currentChange: (current) => {
+          this.handleCurrentChange(current)
+        }
+      },
       tableData: [
         {
-          name: '老王',
+          name: '张三',
           sex: 0,
           age: 18,
           score: 60
         },
         {
-          name: '李梅',
-          sex: 1,
+          name: '李四',
+          sex: 0,
           age: 18,
           score: 80
         }
       ],
       rowHeader: [
-        // 未做任何格式化处理的数据
         {
           prop: 'name',
           label: '姓名'
         },
-        // 格式化为字符串
         {
           prop: 'sex',
           label: '性别',
@@ -43,7 +56,6 @@ export default {
             return h('div', params.row.age + '岁')
           }
         },
-        // 插入组件或标签内容（例：进度条组件）
         {
           prop: 'score',
           label: '分数',
@@ -62,17 +74,38 @@ export default {
           label: '操作',
           render: (h, params) => {
             return (
-              <el-button
-                type='primary'
-                size='small'
-                onClick={() => {
-                  console.log(params)
-                }}>删除</el-button>
+              <div>
+                <el-button
+                  type="primary"
+                  size="small"
+                  onClick={() => {
+                    console.log(params)
+                  }}
+                >
+                编辑
+                </el-button>
+                <el-button
+                  type="danger"
+                  size="small"
+                  onClick={() => {
+                    console.log(params)
+                  }}
+                >
+                删除
+                </el-button>
+              </div>
             )
           }
         }
       ]
     }
+  },
+  methods: {
+    handleCurrentChange (pageSize) {
+      console.log(pageSize)
+    }
   }
 }
 </script>
+
+```
