@@ -1,5 +1,7 @@
 <template>
-  <vue-typer :text='tab'></vue-typer>
+  <div>
+    <vue-typer :text='tab'></vue-typer>
+  </div>
 </template>
 
 <script>
@@ -9,15 +11,7 @@ export default {
   data () {
     return {
       // eslint-disable-next-line quotes
-      tab: [`
-        <pre>
-          <code>
-            rect: {
-              background: #eaeaea;
-            }
-          </code>
-        </pre>
-      `]
+      tab: ['hello', 'world', 'have a nice day']
     }
   }
 }

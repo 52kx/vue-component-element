@@ -27,6 +27,15 @@
         </el-table-column>
         <!-- 针对 index selection expand 单独渲染 -->
         <el-table-column
+          v-else-if="item.type === 'index'"
+          :key="index"
+          type="index"
+          :index="calIndex"
+          :align="item.align"
+          :width="item.width"
+          :label="item.label"
+        />
+        <el-table-column
           :key="index"
           v-else
           :type="item.type"
@@ -38,6 +47,7 @@
     </el-table>
     <el-pagination
       v-if="pagination"
+      ref="pagination"
       :total="pagination.total"
       :layout="pagination.layout"
       :small="pagination.small"
@@ -49,10 +59,10 @@
       :next-text="pagination.nextText"
       :hide-on-single-page="pagination.hideOnSinglePage"
       :disabled="pagination.disabled"
-      @current-change="cur => pagination.currentChange && pagination.currentChange(cur)"
-      @size-change="cur => pagination.sizeChange && pagination.sizeChange(cur)"
-      @prev-click="cur => pagination.prevClick && pagination.prevClick(cur)"
-      @next-click="cur => pagination.nextClick && pagination.nextClick(cur)"
+      @current-change="cur => emitPaginationEventHandler(pagination.currentChange, cur)"
+      @size-change="cur => emitPaginationEventHandler(pagination.sizeChange, cur)"
+      @prev-click="cur => emitPaginationEventHandler(pagination.prevClick, cur)"
+      @next-click="cur => emitPaginationEventHandler(pagination.nextClick, cur)"
       style="margin-top: 4px;text-align: right;"
     ></el-pagination>
   </div>
@@ -110,7 +120,34 @@ export default {
       default: () => []
     },
     // 分页 🍁
-    pagination: Object
+    pagination: {
+      type: Object,
+      default: () => ({
+        total: 1,
+        pageSzie: 10,
+        currentPage: 1
+      })
+    }
+  },
+  methods: {
+    /**
+     * 计算序号
+     */
+    calIndex (index) {
+      if (this.pagination) {
+        const { currentPage, pageSize } = this.$refs.pagination
+        return (index + 1) + (currentPage - 1) * pageSize
+      }
+      return index + 1
+    },
+    /**
+     * 处理分页事件
+     */
+    emitPaginationEventHandler (event, params) {
+      if (event) {
+        event(params)
+      }
+    }
   }
 }
 </script>

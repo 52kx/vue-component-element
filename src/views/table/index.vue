@@ -1,5 +1,6 @@
 <template>
   <my-table
+    v-loading="loading"
     :data="tableData"
     :rowHeader="rowHeader"
     :pagination="pagination"
@@ -13,19 +14,30 @@ export default {
   data () {
     return {
       pagination: {
-        total: 50,
+        total: 10,
         prevText: '上一页',
         nextText: '下一页',
+        layout: 'prev, pager, next, jumper, total',
+        pageSizes: [3, 5, 8],
+        pageSize: 3,
+        currentPage: 1,
         currentChange: (current) => {
           this.handleCurrentChange(current)
         }
       },
+      loading: false,
       tableData: [
         {
           name: '张三',
           sex: 0,
           age: 18,
           score: 60
+        },
+        {
+          name: '李四',
+          sex: 0,
+          age: 18,
+          score: 80
         },
         {
           name: '李四',
@@ -109,8 +121,32 @@ export default {
     }
   },
   methods: {
-    handleCurrentChange (pageSize) {
-      console.log(pageSize)
+    handleCurrentChange (current) {
+      this.pagination.currentPage = current
+      this.loading = true
+      setTimeout(() => {
+        this.tableData = [
+          {
+            name: `张三${current}`,
+            sex: 0,
+            age: 18,
+            score: 60
+          },
+          {
+            name: `李四${current}`,
+            sex: 0,
+            age: 18,
+            score: 80
+          },
+          {
+            name: `李四${current}`,
+            sex: 0,
+            age: 18,
+            score: 80
+          }
+        ]
+        this.loading = false
+      }, 1000)
     }
   }
 }
