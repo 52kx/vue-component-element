@@ -1,23 +1,40 @@
 <template>
   <div>
-    <el-table :data="data">
-      <el-table-column
-        v-for="(col, index) in rowHeader"
-        :key="index"
-        :prop="col.prop"
-        :label="col.label"
-      >
-        <template slot-scope="scope">
-          <ex-slot
-            v-if="col.render"
-            :render="col.render"
-            :row="scope.row"
-            :index="scope.$index"
-            :column="col"
-          ></ex-slot>
-          <span v-else>{{scope.row[col.prop]}}</span>
-        </template>
-      </el-table-column>
+    <el-table
+      :data="data"
+      :border="border"
+      v-loading="vLoading"
+    >
+      <template v-for="(item, index) in rowHeader">
+        <el-table-column
+          :key="index"
+          v-if="item.type === undefined"
+          :align="item.align"
+          :width="item.width"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <template slot-scope="scope">
+            <ex-slot
+              v-if="item.render"
+              :render="item.render"
+              :row="scope.row"
+              :index="scope.$index"
+              :column="item"
+            />
+            <span v-else>{{ scope.row[item.prop] }}</span>
+          </template>
+        </el-table-column>
+        <!-- 针对 index selection expand 单独渲染 -->
+        <el-table-column
+          :key="index"
+          v-else
+          :type="item.type"
+          :align="item.align"
+          :width="item.width"
+          :label="item.label"
+        />
+      </template>
     </el-table>
     <el-pagination
       v-if="pagination"
@@ -72,6 +89,14 @@ export default {
     'ex-slot': exSlot
   },
   props: {
+    vLoading: {
+      type: Boolean,
+      default: false
+    },
+    border: {
+      type: Boolean,
+      default: false
+    },
     // 表格数据
     data: {
       type: Array,

@@ -36,6 +36,14 @@ export default {
       ],
       rowHeader: [
         {
+          type: 'selection'
+        },
+        {
+          type: 'index',
+          width: 60,
+          label: '#'
+        },
+        {
           prop: 'name',
           label: '姓名'
         },
