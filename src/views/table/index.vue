@@ -36,11 +36,14 @@ export default {
       ],
       rowHeader: [
         {
-          type: 'selection'
+          type: 'selection',
+          width: 55,
+          align: 'center'
         },
         {
           type: 'index',
           width: 60,
+          align: 'center',
           label: '#'
         },
         {
