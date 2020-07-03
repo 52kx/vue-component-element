@@ -5,7 +5,7 @@
       :border="border"
       v-loading="vLoading"
     >
-      <template v-for="(item, index) in rowHeader">
+      <template v-for="(item, index) in headers">
         <el-table-column
           :key="index"
           v-if="item.type === undefined"
@@ -127,6 +127,60 @@ export default {
         pageSzie: 10,
         currentPage: 1
       })
+    },
+    showOriginalOperator: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      headers: []
+    }
+  },
+  mounted () {
+    const op = this.$scopedSlots.operator
+    if (op || this.showOriginalOperator) {
+      const operator = {
+        label: '操作',
+        render: (h, params) => {
+          return (
+            <div>
+              {
+                this.showOriginalOperator
+                  ? <span>
+                    <el-button
+                      type="primary"
+                      size="small"
+                      onClick={() => {
+                        this.emitOrigOperEventHandler('on-edit', params)
+                      }}
+                    >
+                      编辑
+                    </el-button>
+                    <el-button
+                      type="danger"
+                      size="small"
+                      style={{ marginRight: '10px' }}
+                      onClick={() => {
+                        this.emitOrigOperEventHandler('on-delete', params)
+                      }}
+                    >
+                      删除
+                    </el-button>
+                  </span>
+                  : ''
+              }
+              {
+                op && op(params)
+              }
+            </div>
+          )
+        }
+      }
+      this.headers = [...this.rowHeader, operator]
+    } else {
+      this.headers = [...this.rowHeader]
     }
   },
   methods: {
@@ -147,6 +201,9 @@ export default {
       if (event) {
         event(params)
       }
+    },
+    emitOrigOperEventHandler (event, params) {
+      this.$emit(event, params)
     }
   }
 }

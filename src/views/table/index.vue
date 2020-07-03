@@ -4,7 +4,14 @@
     :data="tableData"
     :rowHeader="rowHeader"
     :pagination="pagination"
-  />
+    showOriginalOperator
+    @on-edit="handleEdit"
+  >
+   <template slot="operator" slot-scope="data">
+     <el-button size="small" type="primary" @click="handleShow(data)">查看</el-button>
+     <el-button size="small" type="danger" @click="handleShow(data)">删除</el-button>
+   </template>
+  </my-table>
 </template>
 
 <script>
@@ -88,43 +95,76 @@ export default {
               }
             })
           }
-        },
-        {
-          prop: '',
-          label: '操作',
-          render: (h, params) => {
-            return (
-              <div>
-                <el-button
-                  type="primary"
-                  size="small"
-                  onClick={() => {
-                    console.log(params)
-                  }}
-                >
-                编辑
-                </el-button>
-                <el-button
-                  type="danger"
-                  size="small"
-                  onClick={() => {
-                    console.log(params)
-                  }}
-                >
-                删除
-                </el-button>
-              </div>
-            )
-          }
         }
+        // {
+        //   label: '操作1',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h('el-button', {
+        //         props: {
+        //           type: 'primary'
+        //         },
+        //         on: {
+        //           click: () => {
+        //             console.log('编辑', params)
+        //           }
+        //         }
+        //       }, '编辑'),
+        //       h('el-button', {
+        //         props: {
+        //           type: 'danger'
+        //         },
+        //         on: {
+        //           click: () => {
+        //             console.log('新增', params)
+        //           }
+        //         }
+        //       }, '新增')
+        //     ])
+        //   }
+        // }
+        // {
+        //   label: '操作2',
+        //   prop: 'operator',
+        //   render: (h, params) => {
+        //     return (
+        //       <div>
+        //         <el-button
+        //           type="primary"
+        //           size="small"
+        //           onClick={() => {
+        //             console.log(params)
+        //           }}
+        //         >
+        //         编辑
+        //         </el-button>
+        //         <el-button
+        //           type="danger"
+        //           size="small"
+        //           onClick={() => {
+        //             console.log(params)
+        //           }}
+        //         >
+        //         删除
+        //         </el-button>
+        //       </div>
+        //     )
+        //   }
+        // }
       ]
     }
   },
   methods: {
+    handleShow (params) {
+      console.log(params)
+    },
+    handleEdit (params) {
+      console.log(params)
+    },
     handleCurrentChange (current) {
-      this.pagination.currentPage = current
       this.loading = true
       setTimeout(() => {
+        this.pagination.currentPage = current
         this.tableData = [
           {
             name: `张三${current}`,
