@@ -9,6 +9,15 @@ module.exports = {
     overlay: {
       warnnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
     }
   }
 }

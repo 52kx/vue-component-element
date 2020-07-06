@@ -1,0 +1,21 @@
+.ft_search .search_list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.ft_search .search_list .item {
+  margin-right: 20px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.ft_search .search_list .item .label {
+  font-weight: normal;
+  color: #606266;
+  margin-right: 8px;
+}
+
+.ft_search .search_list .item .el-input {
+  width: 300px;
+}

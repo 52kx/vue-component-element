@@ -4,7 +4,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
+import Table from '../package/Table'
+Vue.use(Table, { axios })
 Vue.use(ElementUI)
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 
