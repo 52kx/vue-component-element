@@ -29,7 +29,7 @@
             <span v-else>{{ scope.row[item.prop] }}</span>
           </template>
         </el-table-column>
-        <!-- 针对 index selection expand 单独渲染 -->
+        <!-- 针对 index selection expand 单独渲染 目前 expand 没有处理  // TODO: next version -->
         <el-table-column
           v-else-if="item.type === 'index'"
           :key="index"
@@ -94,11 +94,27 @@ export default {
         })()
       },
       total: 12,
-      formParams: {}
+      formParams: {},
+      nativeThirdParams: {}
+    }
+  },
+  watch: {
+    thirdParams: {
+      handler: function (val) {
+        // 第三方参数需要动态改变，使用watch监听，才能获取到最新的值
+        this.nativeThirdParams = val
+        // 重置当前页数为第一页
+        this.pagination.pageIndex = 1
+        this.dataChangeHandler()
+      },
+      deep: true
     }
   },
   created () {
-    this.fetchHandler()
+    // 第三方参数参与第一次请求，不再 create 中发送请求 否则会产生两次请求
+    if (this.thirdParams === undefined) {
+      this.dataChangeHandler()
+    }
   },
   mounted () {
     const op = this.$scopedSlots.operator
@@ -161,15 +177,27 @@ export default {
     },
     /**
      * 发起请求
-     * formParams 预留给 搜索的参数
      */
     fetchHandler () {
       this.loading = true
-      let { method, url, $axios, showPagination, pageIndexKey, pageSizeKey, pagination, filterParams, formParams } = this
-      let params = { ...formParams }
+      let {
+        method,
+        url,
+        $axios,
+        showPagination,
+        pageIndexKey,
+        pageSizeKey,
+        pagination,
+        filterParams,
+        formParams,
+        nativeThirdParams
+      } = this
+      let params = { ...formParams, ...nativeThirdParams }
+      // 显示分页，请求参数加入分页信息
       if (showPagination) {
         params = { ...params, [pageIndexKey]: pagination.pageIndex, [pageSizeKey]: pagination.pageSize }
       }
+      // 过滤空和 undefined
       params = filterParams(params)
 
       let requestObj = null
@@ -182,6 +210,7 @@ export default {
       }
 
       requestObj.then(res => {
+        // TODO: need optimization
         if (res.success) {
           this.tableData = res.result.list
           this.total = res.result.total
@@ -227,7 +256,7 @@ export default {
       this.dataChangeHandler(data)
     },
     /**
-     * 方便通过 this.$refs 重新家在数据
+     * 方便通过 this.$refs 重新加载数据
      */
     reload () {
       this.fetchHandler()

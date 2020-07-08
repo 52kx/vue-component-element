@@ -44,7 +44,7 @@ export default {
           }
         },
         {
-          label: 'address',
+          label: '地址',
           prop: 'address'
         },
         {

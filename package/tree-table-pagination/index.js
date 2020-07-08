@@ -1,7 +1,13 @@
-import Table from './src/main.vue'
+import TreeTablePagination from './src/main'
+
+// TreeTablePagination.install = function (Vue) {
+//   Vue.component(TreeTablePagination.name, TreeTablePagination)
+// }
+
+// export default TreeTablePagination
 
 const install = function (Vue, opts = {}) {
-  Vue.component(Table.name, Table)
+  Vue.component(TreeTablePagination.name, TreeTablePagination)
   if (!opts.axios) {
     opts.axios = require('axios')
     opts.axios.interceptors.response.use(
@@ -16,11 +22,7 @@ const install = function (Vue, opts = {}) {
   Vue.prototype.$axios = opts.axios
 }
 
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
-};
-
 export default {
   install,
-  Table
+  TreeTablePagination
 }

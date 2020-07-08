@@ -2,6 +2,7 @@ const props = {
   // 获取列表的url
   url: {
     type: String,
+    required: true,
     default: ''
   },
   // 边框
@@ -13,7 +14,7 @@ const props = {
   rowHeader: {
     type: Array,
     required: true,
-    default: () => []
+    default: () => ([])
   },
   // 分页 🍁
   showPagination: {
@@ -62,6 +63,13 @@ const props = {
   searchColumns: {
     type: Array,
     default: undefined
+  },
+  /**
+   * 传入第三方参数，参与请求
+   */
+  thirdParams: {
+    type: Object,
+    default: () => {}
   }
 }
 

@@ -26,7 +26,7 @@ const routes = [
   {
     path: '/typer',
     name: 'typer',
-    component: () => import('../views/typer/index.vue')
+    component: () => import('../views/tree-table/index.vue')
   }
 ]
 

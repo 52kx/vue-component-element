@@ -1,0 +1,16 @@
+.ft_tree_table_pagination {
+  display: flex;
+}
+
+.ft_tree_table_pagination .ft_tree {
+  flex-basis: 300px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin-right: 20px;
+  overflow-x: hidden;
+}
+
+.ft_tree_table_pagination .table_pagination {
+  flex: 1;
+  overflow-x: hidden;
+}
