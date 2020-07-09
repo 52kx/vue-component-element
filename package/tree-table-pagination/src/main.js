@@ -6,12 +6,16 @@ const TreeTablePagination = {
   props,
   data () {
     return {
+      // tree 接入 table 传入的字段
       thirdParams: {},
+      // tree 数据
       treeData: [],
+      // 默认展开的的key值
       defaultExpandedKey: null
     }
   },
   computed: {
+    // treeProps 添加默认的参数如 method 等
     getTreeProps () {
       const { treeProps } = this
       const third = {
@@ -37,16 +41,16 @@ const TreeTablePagination = {
       this.$refs.fttable.reload()
     },
     /**
-     * 加载tree
+     * 加载数据
      */
     getTreeData () {
       const { method, url } = this.getTreeProps
       const { nodeKey } = this.treeProps
       this.$axios[method](url).then(res => {
-        if (res.success) {
-          // TODO: need optimization
-          this.treeData = res.result.list
-          this.defaultExpandedKey = res.result.list[0][nodeKey]
+        const { status, data: { children: { data }, name } } = this.resultTemplate
+        if (res[status]) {
+          this.treeData = res[name][data]
+          this.defaultExpandedKey = res[name][data][0][nodeKey]
           this.$nextTick(() => {
             this.$refs.eltree.setCurrentKey(this.defaultExpandedKey)
             this.thirdParams = {
@@ -75,7 +79,7 @@ const TreeTablePagination = {
       return arg.replace(reg, '-').toLowerCase()
     },
     /**
-     * 获取对象中的函数
+     * 重组对象
      * @param {*} obj
      */
     recombinationObj (obj) {
@@ -98,7 +102,7 @@ const TreeTablePagination = {
     }
   },
   render () {
-    const { thirdParams, treeProps, treeData, tableProps } = this
+    const { thirdParams, treeProps, treeData, tableProps, resultTemplate } = this
     return (
       <div class="ft_tree_table_pagination">
         <div class="ft_tree">
@@ -131,7 +135,9 @@ const TreeTablePagination = {
           class="table_pagination"
           ref="fttable"
           thirdParams={thirdParams}
-          props={{ ...tableProps }}
+          resultTemplate={resultTemplate}
+          // props={{ ...tableProps }}
+          {...this.recombinationObj(tableProps)}
         />
       </div>
     )

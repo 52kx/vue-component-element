@@ -190,7 +190,8 @@ export default {
         pagination,
         filterParams,
         formParams,
-        nativeThirdParams
+        nativeThirdParams,
+        resultTemplate
       } = this
       let params = { ...formParams, ...nativeThirdParams }
       // 显示分页，请求参数加入分页信息
@@ -210,10 +211,11 @@ export default {
       }
 
       requestObj.then(res => {
-        // TODO: need optimization
-        if (res.success) {
-          this.tableData = res.result.list
-          this.total = res.result.total
+        // 从返回数据的模版中获取 key 以匹配后端数据 key
+        const { status, data: { children: { total, data }, name } } = resultTemplate
+        if (res[status]) {
+          this.tableData = res[name][data]
+          this.total = res[total]
           this.loading = false
         }
       }).catch(() => {

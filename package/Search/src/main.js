@@ -4,6 +4,7 @@ import './style/index.css'
 const Search = {
   name: 'Search',
   props: {
+    // 生成搜索
     columns: {
       type: Array,
       default: () => []
@@ -26,15 +27,26 @@ const Search = {
     }
   },
   methods: {
+    /**
+     * 调用search方法
+     */
     onSearch () {
       this.$emit('search', this.searchData)
     },
+    /**
+     * 重置数据
+     */
     onReset () {
       this.columns.forEach(item => {
         this.searchData = { ...this.searchData, [item.prop]: '' }
       })
       this.$emit('search', this.searchData)
     },
+    /**
+     * v-model 使用
+     * @param {*} prop key
+     * @param {*} value value
+     */
     setValue (prop, value) {
       this.searchData[prop] = value
     }

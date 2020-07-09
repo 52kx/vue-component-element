@@ -23,6 +23,34 @@ const props = {
       }
       throw new Error('property url and rowHeader is required !')
     }
+  },
+  /**
+   * 定义数据返回字段
+   * resultTemplate: {
+   *    status: 'success', //请求状态
+   *    msg: 'message', // 信息
+   *    data: {
+   *      name: 'result', // 返回最外层数据的name
+   *      children: {
+   *        total: 'total',  // 总页数
+   *        list: 'list'  // 数据
+   *      }
+   *    }
+   * }
+   */
+  resultTemplate: {
+    type: Object,
+    default: () => ({
+      status: 'status',
+      msg: 'msg',
+      data: {
+        name: 'result',
+        children: {
+          data: 'list',
+          total: 'total'
+        }
+      }
+    })
   }
 }
 

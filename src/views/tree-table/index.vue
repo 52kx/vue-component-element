@@ -4,6 +4,7 @@
       ref="tabletree"
       :tree-props="treeprops"
       :table-props="tableProps"
+      :result-template="resultTemplate"
     />
   </div>
 </template>
@@ -28,6 +29,14 @@ export default {
       },
       tableProps: {
         url: '/api/table',
+        showOriginalOperator: true,
+        onEdit: (params) => {
+          console.log('点击了编辑按钮', params)
+        },
+        onDelete: params => {
+          console.log('点击了删除按钮', params)
+          this.$refs.tabletree.reload()
+        },
         searchColumns: [
           {
             type: 'input',
@@ -59,23 +68,23 @@ export default {
           {
             label: 'address',
             prop: 'address'
-          },
-          {
-            label: '操作',
-            render: (h, params) => {
-              return (
-                <div>
-                  <el-button type='primary' onClick={() => {
-                    console.log(params)
-                  }}>编辑</el-button>
-                  <el-button type='danger' onClick={() => {
-                    console.log(params)
-                    this.$refs.tabletree.reload()
-                  }}>删除</el-button>
-                </div>
-              )
-            }
           }
+          // {
+          //   label: '操作',
+          //   render: (h, params) => {
+          //     return (
+          //       <div>
+          //         <el-button type='primary' onClick={() => {
+          //           console.log(params)
+          //         }}>编辑</el-button>
+          //         <el-button type='danger' onClick={() => {
+          //           console.log(params)
+          //           this.$refs.tabletree.reload()
+          //         }}>删除</el-button>
+          //       </div>
+          //     )
+          //   }
+          // }
         ]
       }
     }
