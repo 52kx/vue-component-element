@@ -4,7 +4,6 @@
       ref="tabletree"
       :tree-props="treeprops"
       :table-props="tableProps"
-      :result-template="resultTemplate"
     />
   </div>
 </template>
@@ -30,11 +29,13 @@ export default {
       tableProps: {
         url: '/api/table',
         showOriginalOperator: true,
-        onEdit: (params) => {
-          console.log('点击了编辑按钮', params)
+        onEdit: (params, event) => {
+          event.stopPropagation()
+          console.log('点击了编辑按钮', params, event)
         },
-        onDelete: params => {
-          console.log('点击了删除按钮', params)
+        onDelete: (params, event) => {
+          console.log('点击了删除按钮', params, event)
+          event.stopPropagation()
           this.$refs.tabletree.reload()
         },
         searchColumns: [
@@ -74,7 +75,9 @@ export default {
           //   render: (h, params) => {
           //     return (
           //       <div>
-          //         <el-button type='primary' onClick={() => {
+          //         <el-button type='primary' onClick={e => {
+          //           console.log(e)
+          //           e.stopPropagation()
           //           console.log(params)
           //         }}>编辑</el-button>
           //         <el-button type='danger' onClick={() => {

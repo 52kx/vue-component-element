@@ -130,8 +130,8 @@ export default {
                     <el-button
                       type="primary"
                       size="small"
-                      onClick={() => {
-                        this.emitOrigOperEventHandler('on-edit', params)
+                      onClick={event => {
+                        this.emitOrigOperEventHandler('on-edit', params, event)
                       }}
                     >
                       编辑
@@ -140,8 +140,8 @@ export default {
                       type="danger"
                       size="small"
                       style={{ marginRight: '10px' }}
-                      onClick={() => {
-                        this.emitOrigOperEventHandler('on-delete', params)
+                      onClick={event => {
+                        this.emitOrigOperEventHandler('on-delete', params, event)
                       }}
                     >
                       删除
@@ -172,8 +172,8 @@ export default {
       }
       return index + 1
     },
-    emitOrigOperEventHandler (event, params) {
-      this.$emit(event, params)
+    emitOrigOperEventHandler (methodName, params, event) {
+      this.$emit(methodName, params, event)
     },
     /**
      * 发起请求
