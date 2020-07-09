@@ -215,7 +215,7 @@ export default {
         const { status, data: { children: { total, data }, name } } = resultTemplate
         if (res[status]) {
           this.tableData = res[name][data]
-          this.total = res[total]
+          this.total = res[name][total]
           this.loading = false
         }
       }).catch(() => {
