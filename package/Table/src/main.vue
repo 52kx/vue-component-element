@@ -13,10 +13,7 @@
         <el-table-column
           :key="index"
           v-if="item.type === undefined"
-          :align="item.align"
-          :width="item.width"
-          :prop="item.prop"
-          :label="item.label"
+          v-bind="item"
         >
           <template slot-scope="scope">
             <ex-slot
@@ -31,21 +28,9 @@
         </el-table-column>
         <!-- 针对 index selection expand 单独渲染 目前 expand 没有处理  // TODO: next version -->
         <el-table-column
-          v-else-if="item.type === 'index'"
-          :key="index"
-          type="index"
-          :index="calIndex"
-          :align="item.align"
-          :width="item.width"
-          :label="item.label"
-        />
-        <el-table-column
           :key="index"
           v-else
-          :type="item.type"
-          :align="item.align"
-          :width="item.width"
-          :label="item.label"
+          v-bind="item"
         />
       </template>
     </el-table>
