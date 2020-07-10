@@ -1,3 +1,2 @@
-# 基于 Element UI 的组件分装
+# 基于 Element UI 的业务组件分装
 
-## Table
