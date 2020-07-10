@@ -5,11 +5,6 @@ const props = {
     required: true,
     default: ''
   },
-  // 边框
-  border: {
-    type: Boolean,
-    default: false
-  },
   // 表头数据
   rowHeader: {
     type: Array,

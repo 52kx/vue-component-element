@@ -29,6 +29,7 @@ export default {
       tableProps: {
         url: '/api/table',
         showOriginalOperator: true,
+        border: false,
         onEdit: (params, event) => {
           event.stopPropagation()
           console.log('点击了编辑按钮', params, event)

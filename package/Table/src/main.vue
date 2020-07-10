@@ -5,9 +5,9 @@
     </div>
     <el-table
       :data="tableData"
-      :border="border"
-      :url="url"
       v-loading="loading"
+      v-bind="$props"
+      v-on="$listeners"
     >
       <template v-for="(item, index) in headers">
         <el-table-column
@@ -66,6 +66,7 @@
 
 <script>
 // 自定义内容的组件
+import { Table } from 'element-ui'
 import props from './props'
 import ExSlot from './ExSlot'
 import Search from '../../Search'
@@ -76,7 +77,10 @@ export default {
     ExSlot,
     Search
   },
-  props,
+  props: {
+    ...Table.props,
+    ...props
+  },
   data () {
     const _this = this
     return {
@@ -117,6 +121,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this)
     const op = this.$scopedSlots.operator
     if (op || this.showOriginalOperator) {
       const operator = {
