@@ -123,7 +123,7 @@
 
 ### 使用方式
 
-> 内部发送请求使用了 axios，所以需要安装 axios ，使用的时候需要传入自己封住 axios 实例，response 拦截器返回 response.data, 也可以不指定，
+> 内部发送请求使用了 axios，所以需要安装 axios ，使用的时候需要传入自己封装的 axios 实例，response 拦截器返回 response.data, 也可以不指定，
 组件内部会默认引入 axios，但是不会对请求拦截个性化定制
 
 ```bash
