@@ -34,7 +34,8 @@ export default {
         },
         {
           label: '姓名',
-          prop: 'name'
+          prop: 'name',
+          sortable: true
         },
         {
           label: '性别',

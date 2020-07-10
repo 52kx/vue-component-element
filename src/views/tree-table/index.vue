@@ -28,6 +28,7 @@ export default {
       },
       tableProps: {
         url: '/api/table',
+        stripe: true,
         showOriginalOperator: true,
         border: false,
         onEdit: (params, event) => {
