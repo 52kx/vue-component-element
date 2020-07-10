@@ -106,8 +106,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this)
-    const op = this.$scopedSlots.operator
+    const op = this.$scopedSlots.default
     if (op || this.showOriginalOperator) {
       const operator = {
         label: '操作',
