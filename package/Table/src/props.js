@@ -42,6 +42,10 @@ const props = {
       return methodTypes.indexOf(value.toLowerCase()) !== -1
     }
   },
+  showAdd: {
+    type: Boolean,
+    default: true
+  },
   // 接口分页参数
   pageIndexKey: {
     type: String,

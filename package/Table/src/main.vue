@@ -1,7 +1,43 @@
 <template>
   <div>
-    <div v-if="searchColumns" style="margin-bottom: 15px">
-      <Search @search="handleSearch" :columns="searchColumns" />
+    <div class="top-operator">
+      <div style="margin: 0 10px 10px 0;">
+        <el-popover
+          placement="bottom-start"
+          trigger="click"
+          width="500"
+          popper-class="header-selector"
+        >
+          <el-checkbox
+            v-model="checkAll"
+            :indeterminate="isIndeterminate"
+            @change="handleCheckAllChange"
+          >
+            全选
+          </el-checkbox>
+          <el-checkbox-group
+            v-model="checkAllHeaders"
+            @change="handleCheckedHeadersChange"
+          >
+            <el-checkbox
+              v-for="item in headers"
+              :key="item.label"
+              :label="item.label"
+              :title="item.label"
+            >
+              {{item.label}}
+            </el-checkbox>
+          </el-checkbox-group>
+          <el-button icon="el-icon-setting" slot="reference" type="primary">设置字段列表</el-button>
+        </el-popover>
+        <el-button
+          v-if="showAdd"
+          style="margin-left:10px;"
+          icon="el-icon-plus"
+          @click="emitOrigOperEventHandler('on-add', null, null)"
+        >新增数据</el-button>
+      </div>
+      <Search v-if="searchColumns" style="margin-bottom: 15px" @search="handleSearch" :columns="searchColumns" />
     </div>
     <el-table
       :data="tableData"
@@ -9,7 +45,7 @@
       v-bind="$props"
       v-on="$listeners"
     >
-      <template v-for="(item, index) in headers">
+      <template v-for="(item, index) in headers.map(item => checkAllHeaders.includes(item.label) ? item : null).filter(item => item)">
         <el-table-column
           :key="index"
           v-if="item.type === undefined"
@@ -84,7 +120,10 @@ export default {
       },
       total: 12,
       formParams: {},
-      nativeThirdParams: {}
+      nativeThirdParams: {},
+      checkAll: true,
+      checkAllHeaders: [],
+      isIndeterminate: false
     }
   },
   watch: {
@@ -110,6 +149,9 @@ export default {
     if (op || this.showOriginalOperator) {
       const operator = {
         label: '操作',
+        prop: 'operator',
+        fixed: 'right',
+        minWidth: 200,
         render: (h, params) => {
           return (
             <div>
@@ -149,8 +191,18 @@ export default {
     } else {
       this.headers = [...this.rowHeader]
     }
+    this.checkAllHeaders = this.headers.map(item => item.label)
+    console.log(this.headers)
   },
   methods: {
+    handleCheckAllChange (val) {
+      this.checkAllHeaders = val ? this.headers.map(item => item.label) : []
+      this.isIndeterminate = false
+    },
+    handleCheckedHeadersChange (value) {
+      const res = this.headers.map(item => value.includes(item.label) ? item : null).filter(item => item)
+      this.checkAllHeaders = res.map(item => item.label)
+    },
     /**
      * 计算序号
      */
@@ -255,3 +307,27 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.top-operator {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+</style>
+
+<style>
+.el-popover.header-selector .el-checkbox {
+  width: 146px;
+  margin-right: 20px;
+}
+
+.el-popover.header-selector .el-checkbox .el-checkbox__label {
+  width: calc(100% - 24px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+</style>
