@@ -192,7 +192,6 @@ export default {
       this.headers = [...this.rowHeader]
     }
     this.checkAllHeaders = this.headers.map(item => item.label)
-    console.log(this.headers)
   },
   methods: {
     handleCheckAllChange (val) {
@@ -202,7 +201,6 @@ export default {
     handleCheckedHeadersChange (value) {
       const res = this.headers.map(item => value.includes(item.label) ? item : null).filter(item => item)
       this.isIndeterminate = value.length !== this.headers.length
-      console.log(value.length === this.headers.length)
       this.checkAllHeaders = res.map(item => item.label)
     },
     /**
