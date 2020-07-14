@@ -201,6 +201,8 @@ export default {
     },
     handleCheckedHeadersChange (value) {
       const res = this.headers.map(item => value.includes(item.label) ? item : null).filter(item => item)
+      this.isIndeterminate = value.length !== this.headers.length
+      console.log(value.length === this.headers.length)
       this.checkAllHeaders = res.map(item => item.label)
     },
     /**
