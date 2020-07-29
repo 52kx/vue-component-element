@@ -2,7 +2,6 @@ const props = {
   // 获取列表的url
   url: {
     type: String,
-    required: true,
     default: ''
   },
   // 表头数据
@@ -10,6 +9,28 @@ const props = {
     type: Array,
     required: true,
     default: () => ([])
+  },
+  // 表格的类型，local 本地数据 remote 远程数据
+  type: {
+    type: String,
+    required: true,
+    validator: value => {
+      const types = ['local', 'remote']
+      if (types.includes(value)) {
+        return true
+      } else {
+        throw new Error(`${value} is not match local or remote`)
+      }
+    }
+  },
+  // local 传递给表格数据
+  data: {
+    type: Array,
+    default: () => ([])
+  },
+  paginationConfig: {
+    type: Object,
+    default: () => ({})
   },
   // 分页 🍁
   showPagination: {

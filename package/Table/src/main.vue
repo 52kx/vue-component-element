@@ -40,7 +40,7 @@
       <Search v-if="searchColumns" style="margin-bottom: 15px" @search="handleSearch" :columns="searchColumns" />
     </div>
     <el-table
-      :data="tableData"
+      :data="type === 'remote' ? tableData : data"
       v-loading="loading"
       v-bind="$props"
       v-on="$listeners"
@@ -72,11 +72,11 @@
     </el-table>
     <el-pagination
       v-if="showPagination"
-      :total="total"
-      :layout="paginationLayout"
-      :page-size="pagination.pageSize"
-      :page-sizes="pageSizes"
-      :current-page="pagination.pageIndex"
+      :total="type === 'remote' ? total : paginationConfig.total"
+      :layout="type === 'remote' ? paginationLayout : paginationConfig.layout || paginationLayout"
+      :page-size="type === 'remote' ? pagination.pageSize : paginationConfig.pageSize"
+      :page-sizes="type === 'remote' ? pageSizes : paginationConfig.pageSizes"
+      :current-page="type === 'remote' ? pagination.pageIndex : paginationConfig.currentPage"
       :hide-on-single-page="false"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
@@ -140,7 +140,7 @@ export default {
   },
   created () {
     // 第三方参数参与第一次请求，不再 create 中发送请求 否则会产生两次请求
-    if (this.thirdParams === undefined) {
+    if (this.thirdParams === undefined && this.type === 'remote') {
       this.dataChangeHandler()
     }
   },
@@ -267,13 +267,25 @@ export default {
      * 分页改变触发
      */
     handleCurrentChange (current) {
-      this.pagination.pageIndex = current
-      this.dataChangeHandler()
+      if (this.type === 'remote') {
+        this.pagination.pageIndex = current
+        this.dataChangeHandler()
+      } else {
+        // 本地数据 local
+        const { paginationConfig } = this
+        paginationConfig && paginationConfig.currentChange && paginationConfig.currentChange(current)
+      }
     },
+
     // 每页显示条数变更触发
     handleSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.dataChangeHandler()
+      if (this.type === 'remote') {
+        this.pagination.pageSize = pageSize
+        this.dataChangeHandler()
+      } else {
+        const { paginationConfig } = this
+        paginationConfig && paginationConfig.currentChange && paginationConfig.sizeChange(pageSize)
+      }
     },
     dataChangeHandler () {
       this.fetchHandler(arguments[0])
@@ -294,9 +306,16 @@ export default {
      * 处理搜索
      */
     handleSearch (data) {
-      this.formParams = data
-      this.pagination.pageIndex = 1
-      this.dataChangeHandler(data)
+      const { type } = this
+      if (type === 'local') {
+        // 使用本地数据需要将搜索的数据导出
+        this.$emit('search', data)
+      } else {
+        // type === remote 远程搜索
+        this.formParams = data
+        this.pagination.pageIndex = 1
+        this.dataChangeHandler(data)
+      }
     },
     /**
      * 方便通过 this.$refs 重新加载数据

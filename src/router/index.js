@@ -24,6 +24,11 @@ const routes = [
     component: () => import('../views/table/index.vue')
   },
   {
+    path: '/local',
+    name: 'Local',
+    component: () => import('../views/local/index.vue')
+  },
+  {
     path: '/typer',
     name: 'typer',
     component: () => import('../views/tree-table/index.vue')

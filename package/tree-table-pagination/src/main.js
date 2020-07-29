@@ -134,6 +134,7 @@ const TreeTablePagination = {
         <Table
           class="table_pagination"
           ref="fttable"
+          type="remote"
           thirdParams={thirdParams}
           resultTemplate={resultTemplate}
           // props={{ ...tableProps }}

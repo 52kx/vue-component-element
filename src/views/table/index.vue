@@ -3,6 +3,7 @@
     <Table
       ref="fttable"
       url="/api/table"
+      type="remote"
       :searchColumns="columns"
       :rowHeader="headers"
       @on-add="handleAdd"
